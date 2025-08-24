@@ -112,7 +112,7 @@ Este projeto tem como objetivo prever o cancelamento de clientes (**churn**) com
 
 **Kaike Gabriel Marques de Souza**  
 Estudante de Engenharia de Software e Análise de Sistemas  
-📫 Contato: [LinkedIn](https://www.linkedin.com/in/kaike-gabriel-marques-de-souza-042975333l) | [Email](mailto:kaikegmds@gmail.com)
+📫 Contato: [LinkedIn](https://www.linkedin.com/in/kaike-gabriel-marques-de-souza-042975333) | [Email](mailto:kaikegmds@gmail.com)
 
 ---
 
