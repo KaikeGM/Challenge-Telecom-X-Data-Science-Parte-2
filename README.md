@@ -1,123 +1,81 @@
-# Challenge Telecom X: Data Science Parte 2/2
 
-# 📊 Predição de Churn com Random Forest
+# 🚩 Challenge Telecom X: Data Science Parte 2/2
 
-Este projeto tem como objetivo prever o cancelamento de clientes (**churn**) com base em dados de comportamento e serviços contratados, utilizando o algoritmo **Random Forest** em conjunto com técnicas de balanceamento de dados: **BorderlineSMOTE** (oversampling) e **NearMiss** (undersampling).
+Este projeto visa construir um modelo de Machine Learning robusto para prever o cancelamento de clientes (**Churn**) em uma operadora de telecomunicações. O foco principal foi superar o **desbalanceamento de classes** (apenas 25% Churn) para garantir que os clientes de alto risco sejam capturados de forma eficaz.
 
-> Projeto desenvolvido em ambiente Google Colab com foco em classificação binária e avaliação de desempenho por múltiplas métricas.
+-----
 
----
+## 🚀 Resultados e Impacto Estratégico
 
-## 🔍 Objetivos
+O melhor modelo (Random Forest + NearMiss) foi otimizado para um *threshold* de **0.4** para priorizar a identificação de clientes em risco:
 
-- Prever com precisão os clientes que têm maior probabilidade de cancelar o serviço.
-- Tratar o desbalanceamento da variável alvo (`churn`).
-- Comparar o desempenho entre diferentes estratégias de amostragem.
-- Identificar as variáveis mais importantes para o modelo.
+| Métrica | Valor (Otimizado) | Implicação Estratégica |
+| :--- | :---: | :--- |
+| **F1-Score** | **0.60** | Máximo equilíbrio entre Precision e Recall. |
+| **Recall (Captura)** | **81%** | O modelo consegue identificar **8 em cada 10 clientes** que realmente fariam Churn. |
+| **Precision** | **47%** | 47% dos clientes sinalizados para retenção realmente iriam evadir. |
 
----
+### 💡 Principais Insights de Negócio
 
-## 🧰 Tecnologias e Bibliotecas
+  * **Fidelidade é o Chave:** A variável **`Tenure`** (Tempo de Contrato) é o preditor mais importante, seguida por `Charges.Monthly` (Gasto Mensal). Clientes que evadirão têm uma média de **18.39 meses** de contrato, significativamente menor que os **37.68 meses** dos clientes fiéis.
+  * **Melhor Abordagem:** O **Random Forest** combinado com **Undersampling (NearMiss)** provou ser a técnica mais eficaz para lidar com o desequilíbrio e maximizar o F1-Score.
 
-- Python 3.11+
-- Pandas
-- NumPy
-- Scikit-learn
-- imbalanced-learn
-- Matplotlib / Seaborn
-- Google Colab
+-----
 
----
+## ⚙️ Pipeline de Modelagem
 
-## ⚙️ Pipeline do Projeto
+### 1\. Importação e Pré-processamento
 
-1. **Importação e pré-processamento dos dados**
-   - Codificação de variáveis categóricas
-   - Tratamento de valores ausentes
-   - Seleção de features
+  * **Engenharia de Atributos:** Criação da variável **`Tenure`** (`Charges.Total` / `Charges.Monthly`).
+  * **Codificação:** Conversão de variáveis categóricas (como `Contract` e `InternetService`) para o formato **One-Hot Encoding** (`pd.get_dummies`).
+  * **Seleção de Features:** Utilização das **10 *features* mais importantes** (incluindo `Tenure`, `Charges.Monthly`, `Contract_month-to-month`, e `OnlineSecurity_no`) para simplificar e otimizar o modelo.
 
-2. **Divisão dos dados**
-   - Treino e teste com `train_test_split`
+### 2\. Balanceamento e Otimização
 
-3. **Balanceamento**
-   - **Oversampling com BorderlineSMOTE**
-   - **Undersampling com NearMiss**
+  * **Estratégias de Imbalance:** Uso de **BorderlineSMOTE (Oversampling)** e **NearMiss (Undersampling)** dentro de *Pipelines* para aplicar o balanceamento apenas no conjunto de treino.
+  * **Otimização:** Aplicação de **GridSearchCV** para encontrar a melhor combinação de hiperparâmetros para os modelos **RandomForest** e **DecisionTree**, focando no **F1-Score**.
 
-4. **Modelagem**
-   - Algoritmo: `RandomForestClassifier`
-   - Pipelines distintas para cada técnica de balanceamento
+### 3\. Avaliação e Decisão
 
-5. **Avaliação dos Modelos**
-   - Acurácia
-   - F1-score
-   - Curva ROC e AUC
-   - Matriz de confusão
-   - Importância das variáveis
+  * **Métricas Robustas:** Foco em **Recall** (prioridade no Churn), **Precision** e **F1-Score**, adequadas para desbalanceamento.
+  * **Ajuste Fino (Threshold):** Ajuste do *threshold* de probabilidade de **0.5 para 0.4** para maximizar o F1-Score, garantindo que mais clientes em risco sejam sinalizados para retenção.
 
----
+-----
 
-## 📈 Resultados Principais
+## 🚀 Como Executar e Testar o Modelo
 
-- **Média de Tenure por Churn:**
-  - Churn = 0 → 37.68 meses
-  - Churn = 1 → 18.39 meses
+O modelo final treinado foi serializado (`.pkl`) e está disponível no repositório. Você pode testá-lo em tempo real usando o script de teste interativo:
 
-- **Top 5 variáveis mais importantes (Oversampling):**
-  - `Charges.Total`
-  - `Contract_two year`
-  - `OnlineSecurity_yes`
-  - `Contract_month-to-month`
-  - `TechSupport_yes`
+### Pré-requisito
 
-- **Top 5 variáveis mais importantes (Undersampling):**
-  - `Charges.Total`
-  - `Charges.Monthly`
-  - `Contract_month-to-month`
-  - `Contract_two year`
-  - `OnlineSecurity_yes`
+1.  **URL do Modelo:** O script puxa o modelo `melhor_modelo.pkl` diretamente do GitHub.
 
-> As métricas indicaram que o modelo com **oversampling** obteve melhor recall para a classe minoritária (clientes que cancelam), sendo preferível quando o objetivo é **reduzir churn**.
+### Teste Interativo (Previsão de um Cliente)
 
----
+Utilize a última célula do notebook para testar a previsão de Churn de um cliente, inserindo seus dados. O script solicitará as informações e aplicará o pré-processamento e o *threshold* de 0.4 automaticamente.
 
-## 📁 Organização dos Arquivos
-
-- `churn_analysis.ipynb` — notebook principal com todo o pipeline
-- `dataset.csv` — base de dados (não incluída por padrão)
-- `/figuras/` — gráficos e matrizes de confusão gerados
-
----
-
-## 🚀 Como Executar
-
-1. Acesse o [Google Colab](https://colab.research.google.com/)
-2. Faça o upload do notebook `churn_analysis.ipynb`
-3. Carregue o arquivo `.csv` da base de dados
-4. Execute célula por célula
-
----
+-----
 
 ## 🧠 Conceitos Aplicados
 
-- Classificação supervisionada
-- Random Forest
-- Desequilíbrio de classes
-- SMOTE / NearMiss
-- Engenharia de atributos
-- Interpretação de modelo
+  - **Classificação supervisionada** (Churn Prediction)
+  - **Random Forest** e **Árvore de Decisão**
+  - **Tratamento de Desequilíbrio de Classes** (SMOTE / NearMiss)
+  - **Otimização de Hiperparâmetros** (Grid Search)
+  - **Engenharia de Atributos** (`Tenure`)
+  - **Interpretação de Modelo** (Feature Importance e Threshold Otimizado)
 
----
+-----
 
 ## 📌 Autor
 
-**Kaike Gabriel Marques de Souza**  
-Estudante de Técnico em Desenvolvimento de Sistemas  
-📫 Contato: [LinkedIn](https://www.linkedin.com/in/kaike-gabriel-marques-de-souza-042975333) | [Email](mailto:kaikegmds@gmail.com)
+**Kaike Gabriel Marques de Souza**
+Estudante de Técnico em Desenvolvimento de Sistemas
+📫 Contato: [LinkedIn](https://www.google.com/search?q=https://www.linkedin.com/in/kaike-gabriel-marques-de-souza-042975333) | [Email](mailto:kaikegmds@gmail.com)
 
----
+-----
 
 ## 📄 Licença
 
-Este projeto está sob a licença MIT.  
-Sinta-se à vontade para usar, estudar e modificar!
-
+Este projeto está sob a licença MIT.
+Sinta-se à vontade para usar, estudar e modificar.
