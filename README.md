@@ -11,7 +11,7 @@ O melhor modelo (Random Forest + NearMiss) foi otimizado para um *threshold* de 
 
 | Métrica | Valor (Otimizado) | Implicação Estratégica |
 | :--- | :---: | :--- |
-| **F1-Score** | **0.60** | Máximo equilíbrio entre Precision e Recall. |
+| **F1-Score** | **60%** | Máximo equilíbrio entre Precision e Recall. |
 | **Recall (Captura)** | **81%** | O modelo consegue identificar **8 em cada 10 clientes** que realmente fariam Churn. |
 | **Precision** | **47%** | 47% dos clientes sinalizados para retenção realmente iriam evadir. |
 
@@ -69,9 +69,9 @@ Utilize a última célula do notebook para testar a previsão de Churn de um cli
 
 ## 📌 Autor
 
-**Kaike Gabriel Marques de Souza**
-Estudante de Técnico em Desenvolvimento de Sistemas
-📫 Contato: [LinkedIn](https://www.google.com/search?q=https://www.linkedin.com/in/kaike-gabriel-marques-de-souza-042975333) | [Email](mailto:kaikegmds@gmail.com)
+- **Kaike Gabriel Marques de Souza**
+- Estudante de Técnico em Desenvolvimento de Sistemas
+- 📫 Contato: [LinkedIn](https://www.google.com/search?q=https://www.linkedin.com/in/kaike-gabriel-marques-de-souza-042975333) | [Email](mailto:kaikegmds@gmail.com)
 
 -----
 
